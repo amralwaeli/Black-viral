@@ -1135,6 +1135,17 @@
     border-top: none;
     transform: matrix(1, -0.1, 0, 1, 0, 0);
     transition: 0.5s;
+    /* keep content compact by default */
+    max-height: 120px;
+}
+
+/* Expand content smoothly on hover for all team items */
+.team .team-item .team-content {
+    transition: max-height .35s ease, background .35s ease, transform .35s ease;
+}
+.team .team-item:hover .team-content,
+.team .team-item.is-active .team-content {
+    max-height: 520px; /* large enough to reveal full details */
 }
 
 .team .team-item .team-content::after {
@@ -1166,6 +1177,36 @@
 .team .team-item:hover .team-content h4 {
     color: var(--bs-white);
 }
+
+/* Team extra under the role (editable in browser) - hidden by default */
+.team .team-item .team-extra {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #6c757d;
+    text-align: center;
+    font-weight: 600;
+    cursor: text;
+    outline: none;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .18s ease, transform .2s ease;
+    pointer-events: none;
+}
+.team .team-item .team-extra {
+    color: #0d6efd; /* fallback color when visible state is not active */
+}
+
+/* Show the extra only on hover or when JS adds .is-active */
+.team .team-item:hover .team-extra,
+.team .team-item.is-active .team-extra {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 15px;
+}
+
 /*** Team End ***/
 
 /*** Testimonial Start ***/

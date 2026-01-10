@@ -162,7 +162,7 @@
                 </div>
                 <div class="row gy-5 gy-lg-4 gx-4">
                     <div class="col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.2s">
-                        <div class="team-item">
+                        <div class="team-item team-osama">
                             <div class="team-img">
                                 <img src="img/Osama mobdy.jpg" class="img-fluid w-100" alt="Image">
                                 <div class="team-icon">
@@ -174,7 +174,12 @@
                             </div>
                             <div class="team-content">
                                 <h4>Osama mobdy</h4>
-                                <p class="mb-0">Profession</p>
+                                <p class="mb-0">Chairman</p>
+                                <!-- Editable label: change text here in the file or edit live in the browser -->
+                                <div class="team-extra" contenteditable="true">Former coach of the Egyptian National Team
+Former Executive Director of Sports Programs at Leejam (Fitness Time), overseeing over 150 branches in 5 Arab countries
+Certified instructor by NAEMT – National Association of Emergency Medical Technicians (USA)
+Certified by the European Resuscitation Council (ERC) for medical and emergency training.</div>
                             </div>
                         </div>
                     </div>
@@ -190,8 +195,20 @@
                                 </div>
                             </div>
                             <div class="team-content">
-                                <h4>Trainer Name</h4>
+                                <h4>Dr. Fatima Al Shorbagy</h4>
                                 <p class="mb-0">Profession</p>
+                                <!-- Editable label: change text here in the file or edit live in the browser -->
+                                <div class="team-extra" contenteditable="true">Specialization: Specialist in Speech & Language Pathology.
+                                    Experience: Over 20 years of experience in Egypt and Saudi Arabia.
+                                    Education: Master’s Degree in Speech & Language Disorders.
+                                    Certifications:
+                                    ABA Specialist – Board Certified (USA).
+                                    Montessori Teacher – American Montessori Board.
+                                    Expertise:
+                                    Behavioral Modification Specialist.
+                                    Occupational Therapy Specialist.
+                                    Extensive experience working with various categories of People of Determination.
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -207,8 +224,13 @@
                                 </div>
                             </div>
                             <div class="team-content">
-                                <h4>Trainer Name</h4>
+                                <h4>C. Kariem Mohamed</h4>
                                 <p class="mb-0">Profession</p>
+                                <!-- Editable label: change text here in the file or edit live in the browser -->
+                                <div class="team-extra" contenteditable="true">Athletic Background: Former Egyptian National Team swimmer.
+Achievement: Ranked among the world’s Top 10 open-water swimmers in 2012.
+Professional Experience: Senior technical director in the UAE for over 5 years.
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -224,8 +246,12 @@
                                 </div>
                             </div>
                             <div class="team-content">
-                                <h4>Trainer Name</h4>
+                                <h4>C. Asmaa Khalil</h4>
                                 <p class="mb-0">Profession</p>
+                                <!-- Editable label: change text here in the file or edit live in the browser -->
+                                <div class="team-extra" contenteditable="true">Background: International gymnast and FIG-certified coach.
+Impact: Has trained and supervised more than 10,000 athletes.
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -415,6 +441,23 @@
 
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
+        <script>
+        (function(){
+            const items = document.querySelectorAll('.team-item .team-img');
+            items.forEach(function(item){
+                const parent = item.closest('.team-item');
+                item.addEventListener('mousemove', function(e){
+                    const rect = item.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left)/rect.width)*100;
+                    const y = ((e.clientY - rect.top)/rect.height)*100;
+                    item.style.setProperty('--mx', x + '%');
+                    item.style.setProperty('--my', y + '%');
+                });
+                item.addEventListener('mouseenter', function(){ parent.classList.add('is-active'); });
+                item.addEventListener('mouseleave', function(){ parent.classList.remove('is-active'); });
+            });
+        })();
+        </script>
     </body>
 
 </html>
