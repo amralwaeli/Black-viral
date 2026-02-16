@@ -28,7 +28,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # this should match the `outDir` in your vite.config.ts (usually dist)
-          path: './dist/'
+          path: './build/'
   deploy:
     needs: build_site
     runs-on: ubuntu-latest
