@@ -1,6 +1,6 @@
 
   {
-      "name": "Website rebuild request",
+      "name": "website-rebuild-request",
       "version": "0.1.0",
       "private": true,
       "dependencies": {

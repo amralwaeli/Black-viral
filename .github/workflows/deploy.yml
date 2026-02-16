@@ -22,8 +22,10 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm install
+      - name: Fix Permissions
+        run: chmod +x node_modules/.bin/vite
       - name: Build
-        run: npx vite build
+        run: npm run build
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
         with:
