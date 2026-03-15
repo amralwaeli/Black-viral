@@ -1,7 +1,3 @@
-# Black Viral
+# Black Viral Athletic Club
 
-## Getting Started
-
-Run `npm i` to install the dependencies.
-
-Run `npm run dev` to start the development server.
+Your gateway to world-class sports training, international certifications, and professional excellence in the UAE.
