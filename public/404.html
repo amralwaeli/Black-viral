@@ -3,13 +3,10 @@
   <head>
     <script>
       var path = window.location.pathname;
+      var search = window.location.search;
       var hash = window.location.hash;
-      // Don't redirect if this is an OAuth callback (has access_token in hash)
-      if (hash && hash.includes('access_token')) {
-        window.location.replace('/dashboard' + hash);
-      } else {
-        window.location.replace('/?redirect=' + path);
-      }
+      // Always redirect to index with the full path preserved
+      window.location.replace('/' + '?redirect=' + encodeURIComponent(path) + '&search=' + encodeURIComponent(search) + '&hash=' + encodeURIComponent(hash));
     </script>
   </head>
 </html>

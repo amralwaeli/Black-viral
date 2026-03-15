@@ -7,9 +7,13 @@
     <link rel="icon" type="image/png" href="/logo.png" />
     <meta name="description" content="Black Viral Athletic Club - Elite Performance | Viral Impact Athlete Development & Performance Built for Champions" />
     <script>
-      const redirect = new URLSearchParams(window.location.search).get('redirect');
-      if (redirect) window.history.replaceState(null, '', redirect);
-    </script>
+      var params = new URLSearchParams(window.location.search);
+      var redirect = params.get('redirect');
+      var hash = params.get('hash');
+      if (redirect) {
+        window.history.replaceState(null, '', redirect + (hash ? decodeURIComponent(hash) : ''));
+      }
+</script>
   </head>
   <body>
     <div id="root"></div>
