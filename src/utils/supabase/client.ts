@@ -15,7 +15,7 @@ export const supabase = createClient(`https://${projectId}.supabase.co`, publicA
   auth: {
     persistSession: true,
     autoRefreshToken: true,
-    detectSessionInUrl: false,
+    detectSessionInUrl: true,
     flowType: 'implicit',
     storageKey: `sb-${projectId}-auth-token`,
     lock: (_name, _acquireTimeout, fn) => fn(),
