@@ -2,7 +2,14 @@
 <html>
   <head>
     <script>
-      window.location.replace('/?redirect=' + window.location.pathname);
+      var path = window.location.pathname;
+      var hash = window.location.hash;
+      // Don't redirect if this is an OAuth callback (has access_token in hash)
+      if (hash && hash.includes('access_token')) {
+        window.location.replace('/dashboard' + hash);
+      } else {
+        window.location.replace('/?redirect=' + path);
+      }
     </script>
   </head>
 </html>
