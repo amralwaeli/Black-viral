@@ -230,6 +230,7 @@ export function EditUserModal({ isOpen, onClose, onSuccess, user, branches, admi
             >
               <option value="trainee">Trainee</option>
               <option value="coach">Coach / Instructor</option>
+              <option value="support">Support</option>
               <option value="super_admin">Super Admin</option>
             </select>
             {formData.role !== user?.role && (
