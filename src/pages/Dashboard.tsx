@@ -7,6 +7,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { TraineeDashboard } from './TraineeDashboard';
 import { CoachDashboard } from './CoachDashboard';
 import { SupportAgentDashboard } from './SupportAgentDashboard';
+import { SuperAdminDashboard } from './SuperAdminDashboard';
 
 export function Dashboard() {
   usePageTitle('Dashboard');
