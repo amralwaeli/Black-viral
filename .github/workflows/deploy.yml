@@ -32,7 +32,10 @@ jobs:
       - name: Build
         run: |
           npm run build
+          ls public/
+          ls build/
           cp -r public/. build/
+          ls build/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
