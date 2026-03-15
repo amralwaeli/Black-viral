@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 export function usePageTitle(title: string) {
   useEffect(() => {
     document.title = title
-      ? `${title} | Black Viral AC`
-      : 'Black Viral AC';
+      ? `${title} | Black Viral Athletic Club`
+      : 'Black Viral Athletic Club';
   }, [title]);
 }
