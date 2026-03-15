@@ -33,7 +33,7 @@ const rescueImage = "https://images.unsplash.com/photo-1770215252183-da5f44f2851
 const footballImage = "https://images.unsplash.com/photo-1650501889311-f7c877f1042d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmb290YmFsbCUyMHNvY2NlciUyMHBsYXllcnxlbnwxfHx8fDE3NzA5NzgwMjh8MA&ixlib=rb-4.1.0&q=80&w=1080";
 
 export function Home() {
-  usePageTitle('Home');
+  usePageTitle('');
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   const stats = [
