@@ -45,9 +45,8 @@ export function Dashboard() {
   }
 
   if (!user || !profile) {
-    // If we were authenticated before (tab return edge case), show spinner
-    // instead of a blank screen while silent refresh finishes
-    if (wasAuthenticatedRef.current) {
+    // Show spinner while profile is loading (including OAuth redirects)
+    if (wasAuthenticatedRef.current || user) {
       return (
         <div className="flex items-center justify-center min-h-screen bg-background">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
