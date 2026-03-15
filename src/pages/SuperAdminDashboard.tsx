@@ -465,8 +465,9 @@ export function SuperAdminDashboard({ profile }: SuperAdminDashboardProps) {
                     <td className="px-6 py-4 text-sm text-muted-foreground">{user.email}</td>
                     <td className="px-6 py-4 text-sm">
                       <span className={`px-2 py-1 rounded text-xs font-medium ${
-                        user.role === 'super_admin' ? 'bg-red-500/20 text-red-400' :
-                        user.role === 'coach' ? 'bg-purple-500/20 text-purple-400' :
+                        user?.role === 'super_admin' ? 'bg-red-500/20 text-red-400' :
+                        user?.role === 'coach' ? 'bg-purple-500/20 text-purple-400' :
+                        user?.role === 'support' ? 'bg-green-500/20 text-green-400' :
                         'bg-cyan-500/20 text-cyan-400'
                       }`}>
                         {user.role}

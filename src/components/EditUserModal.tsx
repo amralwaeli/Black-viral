@@ -191,6 +191,7 @@ export function EditUserModal({ isOpen, onClose, onSuccess, user, branches, admi
           <span className={`px-2 py-1 rounded text-xs font-medium flex-shrink-0 ${
             user?.role === 'super_admin' ? 'bg-red-500/20 text-red-400' :
             user?.role === 'coach' ? 'bg-purple-500/20 text-purple-400' :
+            user?.role === 'support' ? 'bg-green-500/20 text-green-400' :
             'bg-cyan-500/20 text-cyan-400'
           }`}>
             {user?.role}
