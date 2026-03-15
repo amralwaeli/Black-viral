@@ -27,6 +27,9 @@ export function SuperAdminDashboard({ profile }: SuperAdminDashboardProps) {
   const [showEditUserModal, setShowEditUserModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
+  const [showAssignCoachModal, setShowAssignCoachModal] = useState(false);
+  const [assignCourseTarget, setAssignCourseTarget] = useState<any>(null);
+  const [selectedCoachId, setSelectedCoachId] = useState<string>('');
 
   useStuckLoadingRecovery(loading);
 
@@ -34,7 +37,6 @@ export function SuperAdminDashboard({ profile }: SuperAdminDashboardProps) {
 
   async function loadAdminData() {
     try {
-      // Load all users (with support agent field if it exists)
       const { data: usersData, error: usersError } = await supabase
         .from('user_profiles')
         .select('*')
@@ -42,10 +44,8 @@ export function SuperAdminDashboard({ profile }: SuperAdminDashboardProps) {
 
       if (usersError) throw usersError;
       
-      // Check if is_support_agent column exists by checking if any user has this field
       const hasColumnSupport = usersData && usersData.length > 0 && 'is_support_agent' in usersData[0];
       
-      // If column doesn't exist, add it as false for backward compatibility
       const processedUsers = usersData?.map(user => ({
         ...user,
         is_support_agent: hasColumnSupport ? user.is_support_agent : false
@@ -53,7 +53,6 @@ export function SuperAdminDashboard({ profile }: SuperAdminDashboardProps) {
       
       setUsers(processedUsers);
 
-      // Load all courses
       const { data: coursesData, error: coursesError } = await supabase
         .from('courses')
         .select('*, instructor:user_profiles(full_name)')
@@ -62,7 +61,6 @@ export function SuperAdminDashboard({ profile }: SuperAdminDashboardProps) {
       if (coursesError) throw coursesError;
       setCourses(coursesData || []);
 
-      // Load branches
       const { data: branchesData, error: branchesError } = await supabase
         .from('branches')
         .select('*');
@@ -299,7 +297,6 @@ export function SuperAdminDashboard({ profile }: SuperAdminDashboardProps) {
             </button>
           </div>
 
-          {/* Seed notice when no courses exist */}
           {courses.length === 0 && (
             <div className="mb-6 flex items-start gap-3 bg-amber-500/10 border border-amber-500/30 rounded-xl p-4">
               <AlertCircle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
@@ -354,24 +351,15 @@ export function SuperAdminDashboard({ profile }: SuperAdminDashboardProps) {
                       <Edit className="w-4 h-4" />
                     </button>
                     <button
-                      onClick={async () => {
+                      onClick={() => {
                         const coaches = users.filter(u => u.role === 'coach');
                         if (coaches.length === 0) {
                           toast.error('No coaches found. Add a coach first.');
                           return;
                         }
-                        const coachList = coaches.map((c: any, i: number) => `${i + 1}. ${c.full_name}`).join('\n');
-                        const choice = prompt(`Assign a coach to "${course.title}".\n\n${coachList}\n\nEnter coach number (or leave blank to unassign):`);
-                        if (choice === null) return;
-                        const idx = parseInt(choice) - 1;
-                        const coachId = choice.trim() === '' ? null : coaches[idx]?.id;
-                        if (choice.trim() !== '' && coachId === undefined) {
-                          toast.error('Invalid selection');
-                          return;
-                        }
-                        const { error } = await supabase.from('courses').update({ instructor_id: coachId }).eq('id', course.id);
-                        if (error) { toast.error('Failed to update coach'); }
-                        else { toast.success(coachId ? 'Coach assigned!' : 'Coach removed'); loadAdminData(); }
+                        setAssignCourseTarget(course);
+                        setSelectedCoachId(course.instructor_id || '');
+                        setShowAssignCoachModal(true);
                       }}
                       className="px-3 py-1.5 text-xs text-purple-600 dark:text-purple-400 border border-purple-500/30 hover:bg-purple-500/10 rounded-lg transition-all"
                       title="Assign coach"
@@ -527,6 +515,57 @@ export function SuperAdminDashboard({ profile }: SuperAdminDashboardProps) {
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+
+      {/* Assign Coach Modal */}
+      {showAssignCoachModal && assignCourseTarget && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-background border border-border rounded-2xl p-6 w-full max-w-md shadow-2xl">
+            <h3 className="text-lg font-bold text-foreground mb-2">Assign Coach</h3>
+            <p className="text-muted-foreground text-sm mb-4">
+              Select a coach for <span className="text-foreground font-medium">"{assignCourseTarget.title}"</span>
+            </p>
+            <select
+              value={selectedCoachId}
+              onChange={(e) => setSelectedCoachId(e.target.value)}
+              className="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground mb-4 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            >
+              <option value="">-- No Coach (Unassign) --</option>
+              {users.filter(u => u.role === 'coach').map((coach: any) => (
+                <option key={coach.id} value={coach.id}>
+                  {coach.full_name}
+                </option>
+              ))}
+            </select>
+            <div className="flex space-x-3">
+              <button
+                onClick={async () => {
+                  const coachId = selectedCoachId === '' ? null : selectedCoachId;
+                  const { error } = await supabase
+                    .from('courses')
+                    .update({ instructor_id: coachId })
+                    .eq('id', assignCourseTarget.id);
+                  if (error) {
+                    toast.error('Failed to update coach');
+                  } else {
+                    toast.success(coachId ? 'Coach assigned!' : 'Coach removed');
+                    setShowAssignCoachModal(false);
+                    loadAdminData();
+                  }
+                }}
+                className="flex-1 px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg font-medium hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all"
+              >
+                Save
+              </button>
+              <button
+                onClick={() => setShowAssignCoachModal(false)}
+                className="flex-1 px-4 py-2 border border-border text-foreground rounded-lg font-medium hover:bg-muted transition-all"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}
