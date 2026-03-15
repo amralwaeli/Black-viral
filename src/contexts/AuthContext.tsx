@@ -166,7 +166,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setSession(s);
           setUser(s?.user ?? null);
           if (s?.user && !profileRef.current) {
-            applyProfile(await fetchProfile(s.user.id));
+            let p = await fetchProfile(s.user.id);
+            if (!p) {
+              // Auto-create profile for Google/social sign-ins
+              const { data: newProfile } = await supabase
+                .from('user_profiles')
+                .insert({
+                  user_id: s.user.id,
+                  full_name: s.user.user_metadata?.full_name || s.user.email?.split('@')[0] || 'User',
+                  email: s.user.email,
+                  role: 'trainee',
+                })
+                .select()
+                .single();
+              p = newProfile;
+            }
+            applyProfile(p);
           }
           if (loadingRef.current && mounted) setLoading(false);
           return;
