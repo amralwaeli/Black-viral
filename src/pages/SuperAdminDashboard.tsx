@@ -550,6 +550,16 @@ export function SuperAdminDashboard({ profile }: SuperAdminDashboardProps) {
                   if (error) {
                     toast.error('Failed to update coach');
                   } else {
+                    if (coachId) {
+                      await supabase.from('notifications').insert({
+                        user_id: coachId,
+                        type: 'course',
+                        title: 'New Course Assigned',
+                        message: `You have been assigned to coach "${assignCourseTarget.title}"`,
+                        link: '/dashboard',
+                        reference_id: assignCourseTarget.id,
+                      });
+                    }
                     toast.success(coachId ? 'Coach assigned!' : 'Coach removed');
                     setShowAssignCoachModal(false);
                     loadAdminData();
